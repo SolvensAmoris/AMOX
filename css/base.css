@@ -1,1 +1,176 @@
+/* ===========================================================
+   AMOX — base.css
+   Variables globales, reset y tipografía base.
+   No agregar estilos de componentes aquí.
+=========================================================== */
 
+:root{
+
+  /* ===== COLOR — Obsidiana / Jade / Barro / Hueso / Turquesa ===== */
+  --bg:#111315;
+  --surface:#1A1D21;
+  --surface2:#24282E;
+  --surface3:#2E333A;
+
+  --primary:#18A67A;       /* Jade */
+  --primary-hover:#14966D;
+  --primary-soft:rgba(24,166,122,.14);
+
+  --accent:#C86B34;        /* Barro */
+  --accent-soft:rgba(200,107,52,.14);
+
+  --info:#3EC7C2;          /* Turquesa */
+  --info-soft:rgba(62,199,194,.14);
+
+  --text:#F5F1E8;          /* Hueso */
+  --text2:#B7BCC6;
+  --text3:#7B818C;
+
+  --danger:#E05252;
+  --warning:#E6A23C;
+
+  /* ===== RADIOS ===== */
+  --radius-sm:12px;
+  --radius:20px;
+  --radius-lg:28px;
+  --radius-full:999px;
+
+  /* ===== SOMBRAS ===== */
+  --shadow-sm:0 4px 14px rgba(0,0,0,.25);
+  --shadow:0 10px 30px rgba(0,0,0,.35);
+  --shadow-lg:0 18px 45px rgba(0,0,0,.45);
+
+  /* ===== TRANSICIONES ===== */
+  --ease:cubic-bezier(.4,0,.2,1);
+  --fast:.18s;
+  --base:.25s;
+  --slow:.4s;
+
+  /* ===== ESPACIADO (escala 4px) ===== */
+  --sp-1:4px;
+  --sp-2:8px;
+  --sp-3:12px;
+  --sp-4:16px;
+  --sp-5:20px;
+  --sp-6:24px;
+  --sp-7:32px;
+  --sp-8:40px;
+
+  /* ===== Z-INDEX ===== */
+  --z-nav:998;
+  --z-fab:999;
+  --z-modal:1000;
+  --z-toast:1100;
+  --z-splash:9999;
+
+  /* ===== SAFE AREA (notch / barra inferior iOS) ===== */
+  --safe-bottom:env(safe-area-inset-bottom, 0px);
+  --safe-top:env(safe-area-inset-top, 0px);
+}
+
+/* ===== RESET ===== */
+*,
+*::before,
+*::after{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins', sans-serif;
+  -webkit-tap-highlight-color:transparent;
+}
+
+html{
+  scroll-behavior:smooth;
+  -webkit-text-size-adjust:100%;
+}
+
+body{
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  overflow-x:hidden;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+
+button{
+  background:none;
+  border:none;
+  font:inherit;
+  color:inherit;
+  cursor:pointer;
+}
+
+input, textarea{
+  font:inherit;
+  color:inherit;
+  background:none;
+  border:none;
+  outline:none;
+}
+
+ul, ol{
+  list-style:none;
+}
+
+a{
+  text-decoration:none;
+  color:inherit;
+}
+
+img, video, canvas{
+  display:block;
+  max-width:100%;
+}
+
+/* ===== TIPOGRAFÍA BASE ===== */
+h1, h2, h3, h4{
+  font-weight:600;
+  line-height:1.25;
+}
+
+h1{ font-size:28px; }
+h2{ font-size:22px; }
+h3{ font-size:17px; }
+h4{ font-size:15px; }
+
+small{
+  font-size:13px;
+}
+
+/* ===== ACCESIBILIDAD ===== */
+:focus-visible{
+  outline:2px solid var(--info);
+  outline-offset:2px;
+}
+
+@media (prefers-reduced-motion: reduce){
+  *, *::before, *::after{
+    animation-duration:.001ms !important;
+    transition-duration:.001ms !important;
+  }
+}
+
+/* ===== UTILIDADES ===== */
+.visually-hidden{
+  position:absolute;
+  width:1px;
+  height:1px;
+  overflow:hidden;
+  clip:rect(0,0,0,0);
+  white-space:nowrap;
+}
+
+.screen{
+  display:none;
+}
+
+.screen.active{
+  display:block;
+  animation:fadeIn var(--slow) var(--ease);
+}
+
+@keyframes fadeIn{
+  from{ opacity:0; transform:translateY(12px); }
+  to{ opacity:1; transform:none; }
+}
