@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<title>AMOX | El códice inteligente de tu vida</title>
+
+<meta name="description" content="AMOX organiza, protege y recuerda tus documentos importantes mediante Inteligencia Artificial.">
+
+<meta name="theme-color" content="#111315">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+  /* ===== COLORES ===== */
+  --bg:#111315;
+  --surface:#1A1D21;
+  --surface2:#24282E;
+
+  --primary:#18A67A;
+  --primary-hover:#14966D;
+
+  --accent:#C86B34;
+
+  --text:#F5F1E8;
+  --text2:#B7BCC6;
+
+  --danger:#E05252;
+  --warning:#E6A23C;
+
+  --radius:22px;
+
+  --shadow: 0 10px 30px rgba(0,0,0,.35);
+
+  --transition:.25s;
+}
+
+/* RESET */
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* SPLASH */
+#splash{
+  position:fixed;
+  inset:0;
+  background:linear-gradient(180deg, #111315, #17191D);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  z-index:9999;
+  transition:1s;
+}
+
+.logo{
+  width:110px;
+  height:110px;
+  border-radius:28px;
+  background:linear-gradient(135deg, var(--primary), var(--accent));
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:42px;
+  font-weight:700;
+  box-shadow:var(--shadow);
+  animation:pulse 2s infinite;
+}
+
+.logo span{
+  color:white;
+}
+
+.title{
+  margin-top:24px;
+  font-size:32px;
+  font-weight:700;
+  letter-spacing:4px;
+}
+
+.subtitle{
+  margin-top:10px;
+  font-size:15px;
+  color:var(--text2);
+  text-align:center;
+  padding:0 30px;
+}
+
+@keyframes pulse{
+  0%{ transform:scale(1); }
+  50%{ transform:scale(1.05); }
+  100%{ transform:scale(1); }
+}
+
+/* APP */
+#app{
+  display:none;
+  padding:28px;
+  animation:fade .5s;
+}
+
+@keyframes fade{
+  from{ opacity:0; transform:translateY(15px); }
+  to{ opacity:1; transform:none; }
+}
+
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:35px;
+}
+
+.header small{
+  color:var(--text2);
+}
+
+.profile-btn{
+  width:52px;
+  height:52px;
+  border:none;
+  border-radius:18px;
+  background:var(--surface);
+  color:white;
+  font-size:22px;
+  cursor:pointer;
+}
+
+.hero{
+  background:linear-gradient(135deg,#18A67A,#0F7E67);
+  padding:28px;
+  border-radius:28px;
+  box-shadow:var(--shadow);
+}
+
+.hero h1{
+  font-size:28px;
+  margin-bottom:12px;
+}
+
+.hero p{
+  opacity:.9;
+  line-height:1.6;
+  margin-bottom:24px;
+}
+
+.scan-btn{
+  width:100%;
+  padding:18px;
+  border:none;
+  border-radius:18px;
+  background:white;
+  color:#111;
+  font-size:16px;
+  font-weight:600;
+  cursor:pointer;
+}
+
+.search-box{
+  margin:28px 0;
+}
+
+.search-box input{
+  width:100%;
+  padding:18px;
+  border:none;
+  border-radius:18px;
+  background:var(--surface);
+  color:white;
+  font-size:16px;
+  outline:none;
+}
+
+.categories{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:18px;
+}
+
+.card{
+  background:var(--surface);
+  border-radius:22px;
+  padding:28px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  font-size:34px;
+  transition:.25s;
+  cursor:pointer;
+}
+
+.card span{
+  font-size:15px;
+  color:var(--text);
+}
+
+.card:active{
+  transform:scale(.97);
+}
+
+/* ===========================
+   AMOX IA
+=========================== */
+
+.ai-card{
+  margin-top:30px;
+  background:linear-gradient(135deg, #1E2D38, #233A47);
+  border-radius:24px;
+  padding:22px;
+  display:flex;
+  align-items:center;
+  gap:18px;
+}
+
+.ai-icon{
+  width:60px;
+  height:60px;
+  border-radius:18px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(255,255,255,.08);
+  font-size:26px;
+  flex-shrink:0;
+}
+
+.ai-card h3{
+  margin-bottom:6px;
+}
+
+.ai-card p{
+  font-size:13px;
+  line-height:1.5;
+  color:var(--text2);
+}
+
+/* ===========================
+   STATS
+=========================== */
+
+.stats{
+  margin-top:28px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:18px;
+}
+
+.stat-card{
+  background:var(--surface);
+  border-radius:22px;
+  padding:22px;
+  text-align:center;
+}
+
+.stat-card h2{
+  font-size:34px;
+  color:var(--primary);
+}
+
+/* ===========================
+   TIMELINE
+=========================== */
+
+.timeline{
+  margin-top:35px;
+}
+
+.timeline h3{
+  margin-bottom:18px;
+}
+
+.timeline-item{
+  display:flex;
+  gap:16px;
+  background:var(--surface);
+  padding:18px;
+  border-radius:20px;
+}
+
+.dot{
+  width:14px;
+  height:14px;
+  border-radius:50%;
+  background:var(--primary);
+  margin-top:6px;
+  flex-shrink:0;
+}
+
+.timeline p{
+  margin-top:6px;
+  color:var(--text2);
+  line-height:1.6;
+}
+
+/* ===========================
+   QUICK ACTIONS
+=========================== */
+
+.quick-actions{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:16px;
+  margin-top:28px;
+}
+
+.quick-card{
+  background:var(--surface);
+  border:none;
+  border-radius:22px;
+  padding:22px;
+  text-align:left;
+  color:var(--text);
+  cursor:pointer;
+  transition:.25s;
+}
+
+.quick-card:active{
+  transform:scale(.98);
+}
+
+.quick-icon{
+  font-size:30px;
+  margin-bottom:12px;
+}
+
+.quick-card h3{
+  font-size:17px;
+  margin-bottom:8px;
+}
+
+.quick-card p{
+  font-size:13px;
+  line-height:1.5;
+  color:var(--text2);
+}
+
+/* ===========================
+   RECENTS
+=========================== */
+
+.recent-section{
+  margin-top:35px;
+}
+
+.section-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:18px;
+}
+
+.section-header h2{
+  font-size:20px;
+}
+
+.see-all{
+  background:none;
+  border:none;
+  color:var(--primary);
+  font-weight:600;
+  font-size:14px;
+  cursor:pointer;
+}
+
+.recent-card{
+  display:flex;
+  align-items:center;
+  gap:18px;
+  background:var(--surface);
+  padding:18px;
+  border-radius:20px;
+  margin-bottom:14px;
+}
+
+.recent-icon{
+  width:58px;
+  height:58px;
+  border-radius:18px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--surface2);
+  font-size:28px;
+  flex-shrink:0;
+}
+
+.recent-info{
+  flex:1;
+}
+
+.recent-info h4{
+  font-size:16px;
+  margin-bottom:5px;
+}
+
+.recent-info p{
+  font-size:13px;
+  line-height:1.5;
+  color:var(--text2);
+}
+
+/* ===========================
+   FLOATING BUTTON
+=========================== */
+
+.fab{
+  position:fixed;
+  right:24px;
+  bottom:95px;
+  width:68px;
+  height:68px;
+  border:none;
+  border-radius:50%;
+  background:linear-gradient(135deg, var(--primary), var(--accent));
+  color:#fff;
+  font-size:34px;
+  cursor:pointer;
+  box-shadow:0 12px 28px rgba(0,0,0,.35);
+  transition:.25s;
+  z-index:999;
+}
+
+.fab:active{
+  transform:scale(.92);
+}
+
+/* ===========================
+   BOTTOM NAVIGATION
+=========================== */
+
+.bottom-nav{
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:0;
+  height:78px;
+  background:#17191D;
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+  border-top:1px solid rgba(255,255,255,.05);
+  backdrop-filter:blur(18px);
+  z-index:998;
+}
+
+.nav-item{
+  flex:1;
+  height:100%;
+  background:none;
+  border:none;
+  color:var(--text2);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  gap:6px;
+  font-size:12px;
+  cursor:pointer;
+  transition:.25s;
+}
+
+.nav-item div{
+  font-size:22px;
+}
+
+.nav-item.active{
+  color:var(--primary);
+}
+
+.nav-item:active{
+  transform:scale(.95);
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- SPLASH -->
+<div id="splash">
+
+  <div class="logo">
+    <span>A</span>
+  </div>
+
+  <h1 class="title">AMOX</h1>
+
+  <p class="subtitle">
+    El códice inteligente de tu vida
+  </p>
+
+</div>
+
+<!-- =========================
+     AMOX APP
+========================== -->
+
+<div id="app">
+
+    <!-- HEADER -->
+    <header class="header">
+
+        <div>
+            <small>Bienvenido</small>
+            <h2>AMOX</h2>
+        </div>
+
+        <button class="profile-btn">👤</button>
+
+    </header>
+
+
+    <!-- HERO -->
+    <section class="hero">
+
+        <h1>Tu códice inteligente.</h1>
+
+        <p>Guarda, organiza y encuentra cualquier documento en segundos.</p>
+
+        <button class="scan-btn">Escanear documento</button>
+
+    </section>
+
+
+    <!-- BUSCADOR -->
+    <section class="search-box">
+        <input type="text" placeholder="Buscar documentos...">
+    </section>
+
+
+    <!-- CATEGORÍAS -->
+    <section class="categories">
+
+        <div class="card">
+            🪪
+            <span>Identidad</span>
+        </div>
+
+        <div class="card">
+            💳
+            <span>Finanzas</span>
+        </div>
+
+        <div class="card">
+            🏥
+            <span>Salud</span>
+        </div>
+
+        <div class="card">
+            🚗
+            <span>Vehículos</span>
+        </div>
+
+        <div class="card">
+            🏠
+            <span>Hogar</span>
+        </div>
+
+        <div class="card">
+            📄
+            <span>Otros</span>
+        </div>
+
+    </section>
+
+
+    <!-- ===========================
+         AMOX IA
+    ============================ -->
+
+    <section class="ai-card">
+
+        <div class="ai-icon">✦</div>
+
+        <div>
+            <h3>AMOX IA</h3>
+            <p>
+                Todo está organizado.
+                No tienes documentos por vencer.
+            </p>
+        </div>
+
+    </section>
+
+
+    <!-- ===========================
+         ESTADÍSTICAS
+    ============================ -->
+
+    <section class="stats">
+
+        <div class="stat-card">
+            <h2 id="docsCounter">0</h2>
+            <small>Documentos</small>
+        </div>
+
+        <div class="stat-card">
+            <h2 id="foldersCounter">0</h2>
+            <small>Categorías</small>
+        </div>
+
+    </section>
+
+
+    <!-- ===========================
+         LÍNEA DE VIDA
+    ============================ -->
+
+    <section class="timeline">
+
+        <h3>Tu historia</h3>
+
+        <div class="timeline-item">
+
+            <div class="dot"></div>
+
+            <div>
+                <strong>Hoy</strong>
+                <p>
+                    Bienvenido a AMOX.
+                    Comienza creando tu primer códice digital.
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ===========================
+         QUICK ACTIONS
+    ============================ -->
+
+    <section class="quick-actions">
+
+        <button class="quick-card">
+            <div class="quick-icon">📷</div>
+            <h3>Escanear</h3>
+            <p>Captura un nuevo documento.</p>
+        </button>
+
+        <button class="quick-card">
+            <div class="quick-icon">🖼️</div>
+            <h3>Importar</h3>
+            <p>Selecciona una imagen existente.</p>
+        </button>
+
+        <button class="quick-card">
+            <div class="quick-icon">⭐</div>
+            <h3>Favoritos</h3>
+            <p>Accede rápidamente.</p>
+        </button>
+
+        <button class="quick-card">
+            <div class="quick-icon">⏰</div>
+            <h3>Próximamente</h3>
+            <p>Documentos por vencer.</p>
+        </button>
+
+    </section>
+
+
+    <!-- ===========================
+         DOCUMENTOS RECIENTES
+    ============================ -->
+
+    <section class="recent-section">
+
+        <div class="section-header">
+            <h2>Recientes</h2>
+            <button class="see-all">Ver todo</button>
+        </div>
+
+        <article class="recent-card">
+
+            <div class="recent-icon">🪪</div>
+
+            <div class="recent-info">
+                <h4>INE</h4>
+                <p>Aún no has agregado este documento.</p>
+            </div>
+
+        </article>
+
+        <article class="recent-card">
+
+            <div class="recent-icon">💳</div>
+
+            <div class="recent-info">
+                <h4>RFC</h4>
+                <p>Pendiente de importar.</p>
+            </div>
+
+        </article>
+
+        <article class="recent-card">
+
+            <div class="recent-icon">📄</div>
+
+            <div class="recent-info">
+                <h4>Primer documento</h4>
+                <p>Escanea o importa un archivo para comenzar.</p>
+            </div>
+
+        </article>
+
+    </section>
+
+
+    <!-- ===========================
+         ESPACIADOR PARA NAV
+    ============================ -->
+
+    <div style="height:100px;"></div>
+
+</div>
+
+
+<!-- ===========================
+     AMOX FAB
+=========================== -->
+
+<button class="fab" id="fabScan">
+    <span>+</span>
+</button>
+
+
+<!-- ===========================
+     BOTTOM NAVIGATION
+=========================== -->
+
+<nav class="bottom-nav">
+
+    <button class="nav-item active">
+        <div>🏠</div>
+        <small>Inicio</small>
+    </button>
+
+    <button class="nav-item">
+        <div>📂</div>
+        <small>Archivos</small>
+    </button>
+
+    <button class="nav-item">
+        <div>🤖</div>
+        <small>IA</small>
+    </button>
+
+    <button class="nav-item">
+        <div>👤</div>
+        <small>Perfil</small>
+    </button>
+
+</nav>
+
+
+<script>
+
+setTimeout(()=>{
+
+  document.getElementById("splash").style.opacity = "0";
+
+  setTimeout(()=>{
+    document.getElementById("splash").style.display = "none";
+    document.getElementById("app").style.display = "block";
+  }, 600);
+
+}, 1800);
+
+
+const fab = document.getElementById("fabScan");
+
+fab.addEventListener("click", ()=>{
+  alert("Escáner disponible en AMOX v0.2.0");
+});
+
+const items = document.querySelectorAll(".nav-item");
+
+items.forEach(item=>{
+  item.onclick = ()=>{
+    items.forEach(i=>i.classList.remove("active"));
+    item.classList.add("active");
+  };
+});
+
+</script>
+
+</body>
+</html>
